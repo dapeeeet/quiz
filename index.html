@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Cities Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .question {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #00796b;
+        }
+        .option {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #004d40;
+            cursor: pointer;
+        }
+        .submit-btn {
+            background-color: #009688;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #00796b;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="question" id="question">Question will appear here</div>
+        <div id="options"></div>
+        <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            { question: "What is the capital of France?", options: ["Paris", "London", "Rome", "Berlin"], answer: "Paris" },
+            { question: "What is the capital of Japan?", options: ["Tokyo", "Beijing", "Seoul", "Bangkok"], answer: "Tokyo" },
+            { question: "What is the capital of Canada?", options: ["Toronto", "Ottawa", "Vancouver", "Montreal"], answer: "Ottawa" },
+            { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Brisbane"], answer: "Canberra" },
+            { question: "What is the capital of Brazil?", options: ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], answer: "Brasília" },
+            { question: "What is the capital of Germany?", options: ["Berlin", "Munich", "Frankfurt", "Hamburg"], answer: "Berlin" },
+            { question: "What is the capital of India?", options: ["Mumbai", "New Delhi", "Bangalore", "Chennai"], answer: "New Delhi" },
+            { question: "What is the capital of Italy?", options: ["Rome", "Milan", "Naples", "Turin"], answer: "Rome" },
+            { question: "What is the capital of Russia?", options: ["Moscow", "Saint Petersburg", "Kazan", "Sochi"], answer: "Moscow" },
+            { question: "What is the capital of Egypt?", options: ["Cairo", "Alexandria", "Giza", "Luxor"], answer: "Cairo" }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const questionData = quizData[currentQuestion];
+            document.getElementById("question").textContent = questionData.question;
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = "";
+            questionData.options.forEach(option => {
+                const label = document.createElement("label");
+                label.className = "option";
+                label.innerHTML = `<input type="radio" name="answer" value="${option}"> ${option}`;
+                optionsContainer.appendChild(label);
+            });
+        }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            const result = document.getElementById("result");
+            if (selectedOption) {
+                if (selectedOption.value === quizData[currentQuestion].answer) {
+                    result.textContent = 'Correct!';
+                    result.style.color = 'green';
+                } else {
+                    result.textContent = `Wrong! The correct answer is ${quizData[currentQuestion].answer}.`;
+                    result.style.color = 'red';
+                }
+                currentQuestion++;
+                if (currentQuestion < quizData.length) {
+                    setTimeout(() => {
+                        result.textContent = "";
+                        loadQuestion();
+                    }, 2000);
+                } else {
+                    result.textContent += " Quiz finished!";
+                }
+            } else {
+                result.textContent = 'Please select an answer.';
+                result.style.color = 'orange';
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
